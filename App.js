@@ -20,7 +20,11 @@ const App = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: "LocalizeIt" }}
+          options={{
+            title: "LocalizeIt",
+            headerLeft: () => null,
+            gestureEnabled: false,
+          }}
         />
         <Stack.Screen
           name="SearchResults"

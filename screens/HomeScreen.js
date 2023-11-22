@@ -36,15 +36,6 @@ const HomeScreen = () => {
 
     fetchProducts();
   }, []);
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Ionicons name="menu-outline" size={28} />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
 
   const handleSearch = () => {
     navigation.navigate("SearchResults", { query: searchQuery });
