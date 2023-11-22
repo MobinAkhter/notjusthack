@@ -16,6 +16,15 @@ const ProductDetailsScreen = ({ route, navigation }) => {
   const [alternatives, setAlternatives] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const hasAlternatives = () => alternatives.length > 0;
+
+  const NoAlternativesMessage = () => (
+    <View style={styles.noAlternativesContainer}>
+      <Text style={styles.noAlternativesText}>
+        No local alternatives found for this product.
+      </Text>
+    </View>
+  );
   const getSelectedCountry = async () => {
     try {
       const country = await AsyncStorage.getItem("selectedCountry");
@@ -121,9 +130,11 @@ const ProductDetailsScreen = ({ route, navigation }) => {
 
   return (
     <FlatList
-      data={alternatives}
-      keyExtractor={(item) => item.id}
-      renderItem={renderAlternative}
+      data={hasAlternatives() ? alternatives : ["no-alternatives"]}
+      keyExtractor={(item) => item.id || item}
+      renderItem={
+        hasAlternatives() ? renderAlternative : () => <NoAlternativesMessage />
+      }
       ListHeaderComponent={ListHeader}
       showsVerticalScrollIndicator={false}
       ListHeaderComponentStyle={styles.listHeader}
@@ -206,6 +217,27 @@ const styles = StyleSheet.create({
     color: "green",
     marginBottom: 10,
     textAlign: "center",
+  },
+  noAlternativesContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  noAlternativesText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#666",
+    textAlign: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 18,
+    color: "#333",
   },
 });
 
