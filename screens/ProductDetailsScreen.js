@@ -26,17 +26,17 @@ const ProductDetailsScreen = ({ route, navigation }) => {
     } catch (error) {
       console.error("Error retrieving selected country:", error);
     }
-    return null; // Changed from "USA" to null
+    return null;
   };
 
   useEffect(() => {
     const fetchAlternatives = async () => {
       setLoading(true);
       let userCountry = route.params?.country;
-      console.log("Country from route params:", userCountry); // Debugging log
+      console.log("Country from route params:", userCountry);
       if (!userCountry) {
         userCountry = await getSelectedCountry();
-        console.log("Country from AsyncStorage:", userCountry); // Debugging log
+        console.log("Country from AsyncStorage:", userCountry);
       }
       try {
         const querySnapshot = await db
@@ -55,7 +55,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
           fetchedAlternatives.sort((a, b) => a.price - b.price);
           console.log(
             `Fetched Alternatives: ${JSON.stringify(fetchedAlternatives)}`
-          ); // Debugging
+          );
           setAlternatives(fetchedAlternatives);
         }
       } catch (error) {
@@ -106,24 +106,28 @@ const ProductDetailsScreen = ({ route, navigation }) => {
       </TouchableOpacity>
     );
   };
+  const ListHeader = () => (
+    <>
+      <Text style={styles.title}>{product.name}</Text>
+      <Image source={{ uri: product.image }} style={styles.productImage} />
+      <Text style={styles.description}>{product.description}</Text>
+      <Text style={styles.subtitle}>Local Alternatives:</Text>
+    </>
+  );
 
   if (loading) {
     return <Text>Loading...</Text>;
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>{product.name}</Text>
-      <Image source={{ uri: product.image }} style={styles.productImage} />
-      <Text style={styles.description}>{product.description}</Text>
-      <Text style={styles.subtitle}>Local Alternatives:</Text>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={alternatives}
-        keyExtractor={(item) => item.id}
-        renderItem={renderAlternative}
-      />
-    </ScrollView>
+    <FlatList
+      data={alternatives}
+      keyExtractor={(item) => item.id}
+      renderItem={renderAlternative}
+      ListHeaderComponent={ListHeader}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponentStyle={styles.listHeader}
+    />
   );
 };
 
@@ -131,6 +135,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    padding: 20,
+  },
+  listHeader: {
     padding: 20,
   },
   title: {
