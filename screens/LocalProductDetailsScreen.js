@@ -17,5 +17,40 @@ const LocalProductDetailsScreen = ({ route }) => {
 };
 
 export default LocalProductDetailsScreen;
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  productImage: {
+    width: "100%",
+    height: 300,
+    resizeMode: "cover", // Cover the entire area of the image view, this looks better imo, dont need them marging
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  manufacturer: {
+    fontSize: 18,
+    color: "#666",
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  price: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  description: {
+    fontSize: 16,
+    color: "#444",
+    padding: 20,
+  },
+});

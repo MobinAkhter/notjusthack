@@ -15,9 +15,21 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="SearchResults" component={SearchResultsScreen} />
-        <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "LocalizeIt" }}
+        />
+        <Stack.Screen
+          name="SearchResults"
+          component={SearchResultsScreen}
+          options={{ title: "Search Results" }}
+        />
+        <Stack.Screen
+          name="ProductDetails"
+          component={ProductDetailsScreen}
+          options={{ title: "Product Details" }}
+        />
         <Stack.Screen
           name="LocalProductDetails"
           component={LocalProductDetailsScreen}

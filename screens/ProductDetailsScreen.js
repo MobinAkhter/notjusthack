@@ -84,33 +84,15 @@ const ProductDetailsScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
     padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-  },
-  image: {
-    width: "100%",
-    height: 200,
-    resizeMode: "contain",
-  },
-  description: {
-    fontSize: 16,
-    marginVertical: 10,
-  },
-  subtitle: {
-    fontSize: 20,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  alternativeItem: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: "#f0f0f0",
-  },
-  alternativeTitle: {
-    fontSize: 18,
+    marginBottom: 8,
+    textAlign: "center",
+    color: "#333",
   },
   productImage: {
     width: "100%",
@@ -118,18 +100,34 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 20,
   },
+  description: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   alternativeItem: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    marginBottom: 10,
+    padding: 15,
+    marginVertical: 8,
+    backgroundColor: "#fee2e2",
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
   alternativeImage: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
+    width: 80,
+    height: 80,
+    borderRadius: 5,
+    marginRight: 15,
   },
   alternativeDetails: {
     flex: 1,
@@ -137,14 +135,17 @@ const styles = StyleSheet.create({
   alternativeTitle: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#333",
+    marginBottom: 4,
   },
   alternativePrice: {
     fontSize: 16,
-    color: "green",
+    fontWeight: "600",
+    marginBottom: 4,
   },
   alternativeManufacturer: {
     fontSize: 14,
-    color: "grey",
+    color: "#666",
   },
 });
 

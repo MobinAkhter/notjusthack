@@ -89,13 +89,18 @@ const HomeScreen = ({ navigation }) => {
         placeholder={{}}
         value={selectedCategory}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Search for products"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
-      <Button title="Search" onPress={handleSearch} />
+      <View style={styles.searchSection}>
+        <TextInput
+          style={styles.input}
+          placeholder="Search for products..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholderTextColor="#aaa"
+        />
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+          <Text style={styles.searchButtonText}>Search</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={getFilteredProducts()}
@@ -111,13 +116,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#fff",
   },
   input: {
     marginBottom: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    borderRadius: 4,
+    fontSize: 16,
+    color: "black",
   },
   item: {
     flex: 1,
@@ -126,10 +136,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
+    marginTop: 8,
   },
   productImage: {
     width: "100%",
@@ -137,31 +150,53 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 8,
   },
+  searchSection: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  input: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    marginRight: 8,
+    fontSize: 16,
+    color: "#000",
+  },
+  searchButton: {
+    backgroundColor: "red",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    justifyContent: "center",
+  },
+  searchButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
+// Giving the picker some custom styling to make it look like my theme
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "red",
     borderRadius: 4,
-    color: "black",
+    color: "red",
     paddingRight: 30,
     marginBottom: 15,
+    backgroundColor: "#fff",
   },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
-    color: "black",
-    paddingRight: 30,
-    marginBottom: 15,
-  },
+  // Won't have time to make it on Android, otherwise would put styling here
+  //TODO: Add styling for Android in next release
 });
 
 export default HomeScreen;
