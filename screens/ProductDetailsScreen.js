@@ -28,10 +28,13 @@ const ProductDetailsScreen = ({ route, navigation }) => {
           console.log("No alternatives found.");
         }
 
-        const fetchedAlternatives = querySnapshot.docs.map((doc) => ({
+        let fetchedAlternatives = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+        fetchedAlternatives = fetchedAlternatives.sort(
+          (a, b) => a.price - b.price
+        );
 
         setAlternatives(fetchedAlternatives);
       } catch (error) {
@@ -92,6 +95,7 @@ const ProductDetailsScreen = ({ route, navigation }) => {
       <Text style={styles.description}>{product.description}</Text>
       <Text style={styles.subtitle}>Local Alternatives:</Text>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={alternatives}
         keyExtractor={(item) => item.id}
         renderItem={renderAlternative}
