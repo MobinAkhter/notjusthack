@@ -6,6 +6,7 @@ import SearchResultsScreen from "./screens/SearchResultsScreen";
 import ProductDetailsScreen from "./screens/ProductDetailsScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LocalProductDetailsScreen from "./screens/LocalProductDetailsScreen";
+import CountrySelectionScreen from "./screens/CountrySelectionScreen";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Country" component={CountrySelectionScreen} />
         <Stack.Screen
           name="Home"
           component={HomeScreen}

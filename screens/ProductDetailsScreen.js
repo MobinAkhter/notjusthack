@@ -9,39 +9,59 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { db } from "../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProductDetailsScreen = ({ route, navigation }) => {
   const { product } = route.params;
   const [alternatives, setAlternatives] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const getSelectedCountry = async () => {
+    try {
+      const country = await AsyncStorage.getItem("selectedCountry");
+      if (country !== null) {
+        return country;
+      }
+      console.error("No country found in AsyncStorage");
+    } catch (error) {
+      console.error("Error retrieving selected country:", error);
+    }
+    return null; // Changed from "USA" to null
+  };
+
   useEffect(() => {
     const fetchAlternatives = async () => {
       setLoading(true);
+      let userCountry = route.params?.country;
+      console.log("Country from route params:", userCountry); // Debugging log
+      if (!userCountry) {
+        userCountry = await getSelectedCountry();
+        console.log("Country from AsyncStorage:", userCountry); // Debugging log
+      }
       try {
         const querySnapshot = await db
           .collection("LocalAlternatives")
           .where("product_id", "==", product.id)
+          .where("country", "==", userCountry)
           .get();
 
         if (querySnapshot.empty) {
           console.log("No alternatives found.");
+        } else {
+          let fetchedAlternatives = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          fetchedAlternatives.sort((a, b) => a.price - b.price);
+          console.log(
+            `Fetched Alternatives: ${JSON.stringify(fetchedAlternatives)}`
+          ); // Debugging
+          setAlternatives(fetchedAlternatives);
         }
-
-        let fetchedAlternatives = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        fetchedAlternatives = fetchedAlternatives.sort(
-          (a, b) => a.price - b.price
-        );
-
-        setAlternatives(fetchedAlternatives);
       } catch (error) {
         console.error("Error fetching local alternatives:", error);
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchAlternatives();
