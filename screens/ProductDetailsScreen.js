@@ -68,7 +68,10 @@ const ProductDetailsScreen = ({ route, navigation }) => {
       <TouchableOpacity
         style={styles.alternativeItem}
         onPress={() =>
-          navigation.navigate("LocalProductDetails", { product: item })
+          navigation.navigate("LocalProductDetails", {
+            product: item,
+            globalProductName: product.name,
+          })
         }
       >
         <Image source={{ uri: item.image }} style={styles.alternativeImage} />

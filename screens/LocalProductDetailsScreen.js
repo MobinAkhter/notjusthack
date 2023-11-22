@@ -11,16 +11,22 @@ import React, { useLayoutEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 const LocalProductDetailsScreen = ({ route, navigation }) => {
-  const { product } = route.params;
+  const { product, globalProductName } = route.params;
   const onShare = async () => {
+    let message =
+      `Check out this product: ${product.name}\n` +
+      `Manufactured by: ${product.manufacturer}\n` +
+      `Price: $${product.price}\n` +
+      `Description: ${product.description}\n` +
+      `${product.image}`;
+
+    if (globalProductName) {
+      message = `Local alternative for ${globalProductName}: ${message}`;
+    }
+
     try {
       await Share.share({
-        message:
-          `Check out this product: ${product.name}\n` +
-          `Manufactured by: ${product.manufacturer}\n` +
-          `Price: $${product.price}\n` +
-          `Description: ${product.description}\n` +
-          `${product.image}`,
+        message: message,
       });
     } catch (error) {
       alert(error.message);
