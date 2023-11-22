@@ -1,53 +1,86 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { db } from "../firebaseConfig";
 
 const SearchResultsScreen = ({ route, navigation }) => {
   const { query } = route.params;
-  const [searchResults, setSearchResults] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [alternatives, setAlternatives] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (query.trim() === "") {
-      setSearchResults([]);
-      return;
-    }
-
-    const fetchSearchResults = async () => {
+    const fetchProductsAndAlternatives = async () => {
+      setLoading(true);
       try {
-        // Adjust this query to match your data structure and searching needs
-        const querySnapshot = await db
+        // Search for the international products
+        const productsSnapshot = await db
           .collection("Products")
           .where("name", ">=", query)
           .where("name", "<=", query + "\uf8ff")
           .get();
-        const fetchedResults = querySnapshot.docs.map((doc) => ({
+
+        const fetchedProducts = productsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
+          isInternational: true, // Add a flag to indicate this is an international product
         }));
-        setSearchResults(fetchedResults);
+
+        // Search for the local alternatives
+        const alternativesSnapshot = await db
+          .collection("LocalAlternatives")
+          .where("name", ">=", query)
+          .where("name", "<=", query + "\uf8ff")
+          .get();
+
+        const fetchedAlternatives = alternativesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          isInternational: false, // Add a flag to indicate this is a local alternative
+        }));
+
+        // Combine the results
+        const combinedResults = [...fetchedProducts, ...fetchedAlternatives];
+        setProducts(combinedResults);
       } catch (error) {
-        console.log("Error searching documents:", error);
+        console.log("Error fetching products and alternatives:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchSearchResults();
+    fetchProductsAndAlternatives();
   }, [query]);
+
+  if (loading) {
+    return <ActivityIndicator size="large" />;
+  }
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => navigation.navigate("ProductDetails", { product: item })}
+    >
+      <Text style={styles.title}>{item.name}</Text>
+      {/* Render additional details if needed */}
+      <Text style={styles.subtitle}>
+        {item.isInternational ? "International" : "Local Alternative"}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={results}
+        data={products}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Text
-            style={styles.item}
-            onPress={() =>
-              navigation.navigate("ProductDetails", { product: item })
-            }
-          >
-            {item.name}
-          </Text>
-        )}
+        renderItem={renderItem}
       />
     </View>
   );
@@ -62,6 +95,14 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     backgroundColor: "#f9f9f9",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    fontSize: 14,
+    color: "grey",
   },
 });
 

@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { db } from "../firebaseConfig"; // Make sure this path is correct
 
@@ -42,8 +43,20 @@ const HomeScreen = ({ navigation }) => {
         style={styles.item}
         onPress={() => navigation.navigate("ProductDetails", { product: item })}
       >
+        {item.image ? (
+          <Image
+            source={{ uri: item.image }}
+            style={styles.productImage}
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            source={{
+              uri: "https://upload.wikimedia.org/wikipedia/commons/5/5e/No_image_available_-_museum.svg",
+            }}
+          />
+        )}
         <Text style={styles.title}>{item.name}</Text>
-        {/* Additional product info like image can be included here */}
       </TouchableOpacity>
     );
   };
@@ -90,6 +103,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  productImage: {
+    width: "100%",
+    height: 100,
+    borderRadius: 5,
+    marginBottom: 8,
   },
 });
 
