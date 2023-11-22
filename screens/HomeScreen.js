@@ -91,7 +91,6 @@ const HomeScreen = () => {
           { label: "Shoes", value: "Shoes" },
           { label: "Clothing", value: "Clothing" },
           { label: "Electronics", value: "Electronics" },
-          // { label: "Electronics", value: "Electronics" },
           { label: "Beverages", value: "Beverages" },
           { label: "Automotive", value: "Automotive" },
 

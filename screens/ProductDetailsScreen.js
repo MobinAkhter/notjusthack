@@ -44,23 +44,42 @@ const ProductDetailsScreen = ({ route, navigation }) => {
     fetchAlternatives();
   }, [product]);
 
-  const renderAlternative = ({ item }) => (
-    <TouchableOpacity
-      style={styles.alternativeItem}
-      onPress={() =>
-        navigation.navigate("LocalProductDetails", { product: item })
-      }
-    >
-      <Image source={{ uri: item.image }} style={styles.alternativeImage} />
-      <View style={styles.alternativeDetails}>
-        <Text style={styles.alternativeTitle}>{item.name}</Text>
-        <Text style={styles.alternativePrice}>Price: ${item.price}</Text>
-        <Text style={styles.alternativeManufacturer}>
-          Made by: {item.manufacturer}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderAlternative = ({ item }) => {
+    const priceDifference = item.price - product.price;
+    const priceComparisonText =
+      priceDifference > 0
+        ? `More expensive by $${priceDifference.toFixed(2)}`
+        : priceDifference < 0
+        ? `Cheaper by $${Math.abs(priceDifference).toFixed(2)}`
+        : "Same price";
+
+    const priceComparisonStyle = {
+      fontSize: 14,
+      fontWeight: "600",
+      color:
+        priceDifference > 0 ? "red" : priceDifference < 0 ? "green" : "black",
+      marginBottom: 4,
+    };
+
+    return (
+      <TouchableOpacity
+        style={styles.alternativeItem}
+        onPress={() =>
+          navigation.navigate("LocalProductDetails", { product: item })
+        }
+      >
+        <Image source={{ uri: item.image }} style={styles.alternativeImage} />
+        <View style={styles.alternativeDetails}>
+          <Text style={styles.alternativeTitle}>{item.name}</Text>
+          <Text style={styles.alternativePrice}>Price: ${item.price}</Text>
+          <Text style={priceComparisonStyle}>{priceComparisonText}</Text>
+          <Text style={styles.alternativeManufacturer}>
+            Made by: {item.manufacturer}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -146,6 +165,13 @@ const styles = StyleSheet.create({
   alternativeManufacturer: {
     fontSize: 14,
     color: "#666",
+  },
+  globalPrice: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "green",
+    marginBottom: 10,
+    textAlign: "center",
   },
 });
 

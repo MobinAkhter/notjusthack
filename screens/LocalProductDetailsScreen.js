@@ -1,8 +1,41 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  Image,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useLayoutEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
-const LocalProductDetailsScreen = ({ route }) => {
+const LocalProductDetailsScreen = ({ route, navigation }) => {
   const { product } = route.params;
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message:
+          `Check out this product: ${product.name}\n` +
+          `Manufactured by: ${product.manufacturer}\n` +
+          `Price: $${product.price}\n` +
+          `Description: ${product.description}\n` +
+          `${product.image}`,
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={onShare} style={{ marginRight: 10 }}>
+          <Ionicons name="share-outline" size={28} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, onShare]);
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: product.image }} style={styles.productImage} />
