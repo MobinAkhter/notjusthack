@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { db } from "../firebaseConfig"; // Make sure this path is correct
+import RNPickerSelect from "react-native-picker-select";
+import { db } from "../firebaseConfig";
 
 const HomeScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,8 +35,17 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const handleSearch = () => {
-    // Perform the search operation
     navigation.navigate("SearchResults", { query: searchQuery });
+  };
+
+  const getFilteredProducts = () => {
+    if (selectedCategory === "All") {
+      return products;
+    } else {
+      return products.filter(
+        (product) => product.category === selectedCategory
+      );
+    }
   };
 
   const renderItem = ({ item }) => {
@@ -50,11 +61,7 @@ const HomeScreen = ({ navigation }) => {
             resizeMode="contain"
           />
         ) : (
-          <Image
-            source={{
-              uri: "https://upload.wikimedia.org/wikipedia/commons/5/5e/No_image_available_-_museum.svg",
-            }}
-          />
+          <Text>No image available</Text>
         )}
         <Text style={styles.title}>{item.name}</Text>
       </TouchableOpacity>
@@ -63,6 +70,25 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <RNPickerSelect
+        onValueChange={(value) => setSelectedCategory(value)}
+        items={[
+          { label: "All", value: "All" },
+          { label: "Snacks", value: "Snacks" },
+
+          { label: "Shoes", value: "Shoes" },
+          { label: "Clothing", value: "Clothing" },
+          { label: "Electronics", value: "Electronics" },
+          // { label: "Electronics", value: "Electronics" },
+          { label: "Beverages", value: "Beverages" },
+          { label: "Automotive", value: "Automotive" },
+
+          ,
+        ]}
+        style={pickerSelectStyles}
+        placeholder={{}}
+        value={selectedCategory}
+      />
       <TextInput
         style={styles.input}
         placeholder="Search for products"
@@ -71,7 +97,8 @@ const HomeScreen = ({ navigation }) => {
       />
       <Button title="Search" onPress={handleSearch} />
       <FlatList
-        data={products}
+        showsVerticalScrollIndicator={false}
+        data={getFilteredProducts()}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={2}
@@ -109,6 +136,31 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 5,
     marginBottom: 8,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30,
+    marginBottom: 15,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    borderRadius: 8,
+    color: "black",
+    paddingRight: 30,
+    marginBottom: 15,
   },
 });
 

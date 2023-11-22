@@ -42,7 +42,7 @@ const SearchResultsScreen = ({ route, navigation }) => {
         const fetchedAlternatives = alternativesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-          isInternational: false, // Add a flag to indicate this is a local alternative
+          isInternational: false,
         }));
 
         // Combine the results
@@ -68,7 +68,6 @@ const SearchResultsScreen = ({ route, navigation }) => {
       onPress={() => navigation.navigate("ProductDetails", { product: item })}
     >
       <Text style={styles.title}>{item.name}</Text>
-      {/* Render additional details if needed */}
       <Text style={styles.subtitle}>
         {item.isInternational ? "International" : "Local Alternative"}
       </Text>
