@@ -6,10 +6,11 @@ import {
   StyleSheet,
   ScrollView,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { db } from "../firebaseConfig";
 
-const ProductDetailsScreen = ({ route }) => {
+const ProductDetailsScreen = ({ route, navigation }) => {
   const { product } = route.params;
   const [alternatives, setAlternatives] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +45,12 @@ const ProductDetailsScreen = ({ route }) => {
   }, [product]);
 
   const renderAlternative = ({ item }) => (
-    <View style={styles.alternativeItem}>
+    <TouchableOpacity
+      style={styles.alternativeItem}
+      onPress={() =>
+        navigation.navigate("LocalProductDetails", { product: item })
+      }
+    >
       <Image source={{ uri: item.image }} style={styles.alternativeImage} />
       <View style={styles.alternativeDetails}>
         <Text style={styles.alternativeTitle}>{item.name}</Text>
@@ -53,7 +59,7 @@ const ProductDetailsScreen = ({ route }) => {
           Made by: {item.manufacturer}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   if (loading) {
