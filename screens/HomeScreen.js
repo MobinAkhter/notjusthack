@@ -11,8 +11,11 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { db } from "../firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -33,6 +36,15 @@ const HomeScreen = ({ navigation }) => {
 
     fetchProducts();
   }, []);
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+          <Ionicons name="menu-outline" size={28} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   const handleSearch = () => {
     navigation.navigate("SearchResults", { query: searchQuery });
