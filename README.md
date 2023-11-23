@@ -16,3 +16,6 @@
 
 ### However, when you select USA, you see local (American) alternatives of the same product retrieved from Firestore database.
 <img src="https://github.com/MobinAkhter/notjusthack/assets/55329336/3ad396c0-9459-4ac5-aec8-edd8a3d72678" width="200">
+
+### Firebase (Firestore database) image
+![image](https://github.com/MobinAkhter/notjusthack/assets/55329336/cb431c14-2fef-48a7-99a2-0604d9dc7b21)
